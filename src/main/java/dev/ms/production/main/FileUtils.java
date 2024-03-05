@@ -66,6 +66,89 @@ public class FileUtils {
             case 1 -> searchByOib(scanner, phonebookList);
             default -> programOptions(scanner);
         }
+    }
+
+    public static void searchByPhoneNumber(Scanner scanner, List<Phonebook> phonebookList) {
+        Long phoneNumber = -1L;
+        Boolean errorInput;
+
+        do {
+            errorInput = false;
+            try {
+                System.out.println("Unesite broj mobitela u formatu (09xxxxxxxx): ");
+                String input = scanner.nextLine();
+                if (input.length() < 10 || input.length() > 11) {
+                    throw new IllegalArgumentException();
+                }
+                phoneNumber = Long.parseLong(input);
+
+            } catch (IllegalArgumentException e) {
+                errorInput = true;
+                System.out.println("Pogresan unos. Molimo pokusajte ponovno po preporucenom formatu.");
+            }
+        } while (errorInput);
+
+        for (Phonebook phonebook : phonebookList) {
+            if (phonebook.getPhoneNumber().equals(phoneNumber)) {
+                System.out.println("Korisnik pronaden:");
+                System.out.println(phonebook);
+            } else {
+                System.out.println("Korisnik s brojem: " + phoneNumber + " nije pronadjen");
+            }
+        }
+    }
+
+    public void searchByAddress(Scanner scanner, List<Phonebook> phonebookList) {
+        String city;
+
+    }
+
+    public static void searchByLastName(Scanner scanner, List<Phonebook> phonebookList) {
+        String lastName;
+        Boolean errorInput;
+
+        do {
+            errorInput = false;
+            System.out.println("Unesite prezime: ");
+            lastName = scanner.nextLine();
+            if (!lastName.matches("[a-zA-Z]+")) {
+                errorInput = true;
+                System.out.println("Pogresan unos. Prezime moze sadrzavati samo slova. Pokusajte ponovno.");
+            }
+        } while (errorInput);
+
+        for (Phonebook phonebook : phonebookList) {
+            if (phonebook.getLastName().equals(lastName)) {
+                System.out.println("Korisnik pronaden:");
+                System.out.println(phonebook);
+            } else {
+                System.out.println("Korisnik s prezimenom: " + lastName + " nije pronadjen");
+            }
+        }
+    }
+
+    public static void searchByFirstName(Scanner scanner, List<Phonebook> phonebookList) {
+        String firstName;
+        Boolean errorInput;
+
+        do {
+            errorInput = false;
+            System.out.println("Unesite ime: ");
+            firstName = scanner.nextLine();
+            if (!firstName.matches("[a-zA-Z]+")) {
+                errorInput = true;
+                System.out.println("Pogresan unos. Ime moze sadrzavati samo slova. Pokusajte ponovno.");
+            }
+        } while (errorInput);
+
+        for (Phonebook phonebook : phonebookList) {
+            if (phonebook.getFirstName().equals(firstName)) {
+                System.out.println("Korisnik pronaden:");
+                System.out.println(phonebook);
+            } else {
+                System.out.println("Korisnik s imenom: " + firstName + " nije pronadjen");
+            }
+        }
 
     }
 
