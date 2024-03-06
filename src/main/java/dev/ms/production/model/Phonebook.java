@@ -56,4 +56,15 @@ public class Phonebook {
     public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Imenik{" +
+                "oib=" + oib +
+                ", ime='" + firstName + '\'' +
+                ", prezime='" + lastName + '\'' +
+                ", adresa=" + address +
+                ", broj=" + phoneNumber +
+                '}';
+    }
 }
