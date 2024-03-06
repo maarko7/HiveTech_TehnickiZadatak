@@ -16,7 +16,7 @@ public class FileUtils {
         Integer choosenIndex = -1;
         do {
             try {
-                System.out.println("Unosom broja isred teksta odaberite zeljenu akciju: ");
+                System.out.println("Unosom broja ispred teksta odaberite zeljenu akciju: ");
                 System.out.println("1. Pregled imenika\n" +
                         "2. Unos novog korisnika\n" +
                         "3. Kraj programa");
@@ -128,16 +128,17 @@ public class FileUtils {
 
         address = new Address(streetName, houseNumber, city);
 
+        Boolean found = false;
         for (Phonebook phonebook : phonebookList) {
             if (phonebook.getAddress().equals(address)) {
                 System.out.println("Korisnik pronaden:");
                 System.out.println(phonebook);
-            } else {
-                System.out.println("Korisnik s adresom: " + address + " nije pronadjen");
+                found = true;
             }
         }
-
-
+        if (!found) {
+            System.out.println("Korisnik s adresom: " + address + " nije pronadjen");
+        }
     }
 
     public static void searchByLastName(Scanner scanner, List<Phonebook> phonebookList) {
@@ -154,13 +155,16 @@ public class FileUtils {
             }
         } while (errorInput);
 
+        Boolean found = true;
         for (Phonebook phonebook : phonebookList) {
             if (phonebook.getLastName().equalsIgnoreCase(lastName)) {
                 System.out.println("Korisnik pronaden:");
                 System.out.println(phonebook);
-            } else {
-                System.out.println("Korisnik s prezimenom: " + lastName + " nije pronadjen");
+                found = false;
             }
+        }
+        if (found) {
+            System.out.println("Korisnik s prezimenom: " + lastName + " nije pronadjen");
         }
     }
 
@@ -178,13 +182,16 @@ public class FileUtils {
             }
         } while (errorInput);
 
+        Boolean found = false;
         for (Phonebook phonebook : phonebookList) {
             if (phonebook.getFirstName().equalsIgnoreCase(firstName)) {
                 System.out.println("Korisnik pronaden:");
                 System.out.println(phonebook);
-            } else {
-                System.out.println("Korisnik s imenom: " + firstName + " nije pronadjen");
+                found = true;
             }
+        }
+        if (!found) {
+            System.out.println("Korisnik s imenom: " + firstName + " nije pronadjen");
         }
 
     }
@@ -205,13 +212,16 @@ public class FileUtils {
             }
         } while (errorInput || input.length() != 11);
 
+        Boolean found = false;
         for (Phonebook phonebook : phonebookList) {
             if (phonebook.getOib().equals(oib)) {
                 System.out.println("Korisnik pronaden:");
                 System.out.println(phonebook);
-            } else {
-                System.out.println("Korisnik s OIB-om: " + oib + " nije pronadjen");
+                found = true;
             }
+        }
+        if (!found) {
+            System.out.println("Korisnik s OIB-om: " + oib + " nije pronadjen");
         }
     }
 
