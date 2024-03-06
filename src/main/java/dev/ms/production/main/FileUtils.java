@@ -22,11 +22,9 @@ public class FileUtils {
                         "3. Kraj programa");
                 choosenIndex = scanner.nextInt();
                 scanner.nextLine();
-//                if (choosenIndex < 1 || choosenIndex > 3) {
-//                    throw new IllegalArgumentException();
-//                }
-            } catch (IllegalArgumentException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
+                scanner.nextLine();
             }
             switch (choosenIndex) {
                 case 1 -> searchPhonebookList(scanner, phonebookList);
@@ -34,7 +32,7 @@ public class FileUtils {
                 case 3 -> errorInput = false;
             }
 
-        } while (errorInput || choosenIndex < 1 || choosenIndex > 3);
+        } while (errorInput);
     }
 
     public static void searchPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
@@ -95,7 +93,46 @@ public class FileUtils {
     }
 
     public void searchByAddress(Scanner scanner, List<Phonebook> phonebookList) {
+        Address address;
         String city;
+        String streetName;
+        String houseNumber;
+
+        Boolean errorInput;
+        do {
+            errorInput = false;
+            System.out.println("Unesite naziv grada: ");
+            city = scanner.nextLine();
+            if (!city.matches("[a-zA-Z]+")) {
+                errorInput = true;
+                System.out.println("Pogresan unos. Naziv grada moze sadrzavati samo slova. Pokusajte ponovno.");
+            }
+        } while (errorInput);
+
+        do {
+            errorInput = false;
+            System.out.println("Unesite naziv ulice: ");
+            streetName = scanner.nextLine();
+            if (!streetName.matches("[a-zA-Z]+")) {
+                errorInput = true;
+                System.out.println("Pogresan unos. Naziv ulice moze sadrzavati samo slova. Pokusajte ponovno.");
+            }
+        } while (errorInput);
+
+        System.out.println("Unesite kućni broj: ");
+        houseNumber = scanner.nextLine();
+
+        address = new Address(streetName, houseNumber, city);
+
+        for (Phonebook phonebook : phonebookList) {
+            if (phonebook.getAddress().equals(address)) {
+                System.out.println("Korisnik pronaden:");
+                System.out.println(phonebook);
+            } else {
+                System.out.println("Korisnik s adresom: " + address + " nije pronadjen");
+            }
+        }
+
 
     }
 
