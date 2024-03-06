@@ -22,14 +22,14 @@ public class FileUtils {
                         "3. Kraj programa");
                 choosenIndex = scanner.nextInt();
                 scanner.nextLine();
+                switch (choosenIndex) {
+                    case 1 -> searchPhonebookList(scanner, phonebookList);
+                    case 2 -> addUserToPhonebookList(scanner, phonebookList);
+                    case 3 -> errorInput = false;
+                }
             } catch (InputMismatchException e) {
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
                 scanner.nextLine();
-            }
-            switch (choosenIndex) {
-                case 1 -> searchPhonebookList(scanner, phonebookList);
-                case 2 -> addUserToPhonebookList(scanner, phonebookList);
-                case 3 -> errorInput = false;
             }
 
         } while (errorInput);
