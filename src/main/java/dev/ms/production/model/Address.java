@@ -79,6 +79,6 @@ public class Address {
 
     @Override
     public String toString() {
-        return street + " " + houseNumber + ", " + city;
+        return "'" + city + street + " " + houseNumber + "', ";
     }
 }
