@@ -60,6 +60,10 @@ public class FileUtils {
 
         switch (choosenIndex) {
             case 1 -> searchByOib(scanner, phonebookList);
+            case 2 -> searchByFirstName(scanner, phonebookList);
+            case 3 -> searchByLastName(scanner, phonebookList);
+            case 4 -> searchByAddress(scanner, phonebookList);
+            case 5 -> searchByPhoneNumber(scanner, phonebookList);
             default -> programOptions(scanner);
         }
     }
@@ -92,7 +96,7 @@ public class FileUtils {
         }
     }
 
-    public void searchByAddress(Scanner scanner, List<Phonebook> phonebookList) {
+    public static void searchByAddress(Scanner scanner, List<Phonebook> phonebookList) {
         Address address;
         String city;
         String streetName;
@@ -212,10 +216,10 @@ public class FileUtils {
     }
 
     public static void addUserToPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
-        phonebookList.add(createNewUser(scanner));
+        phonebookList.add(createNewUser(scanner, phonebookList));
     }
 
-    public static Phonebook createNewUser(Scanner scanner) {
+    public static Phonebook createNewUser(Scanner scanner, List<Phonebook> phonebookList) {
         Long oib = -1L;
         String firstName;
         String lastName;
@@ -233,6 +237,13 @@ public class FileUtils {
                 System.out.println("Unesite OIB (11 znamenki): ");
                 input = scanner.nextLine();
                 oib = Long.parseLong(input);
+
+                for (Phonebook phonebook : phonebookList) {
+                    if (phonebook.getOib().equals(oib)) {
+                        errorInput = true;
+                        System.out.println("OIB vec postoji. Unesite drugi OIB.");
+                    }
+                }
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo unesite 11 znamenki.");
@@ -295,7 +306,7 @@ public class FileUtils {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo pokusajte ponovno po preporucenom formatu.");
             }
-        } while (errorInput || input.length() < 10 || input.length() > 11 || input.startsWith("09"));
+        } while (errorInput || input.length() < 10 || input.length() > 11 || !input.startsWith("09"));
 
         return new Phonebook(oib, firstName, lastName, address, phoneNumber);
     }
