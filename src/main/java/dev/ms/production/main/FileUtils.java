@@ -12,22 +12,20 @@ public class FileUtils {
 
     public static void programOptions(Scanner scanner) {
         List<Phonebook> phonebookList = new ArrayList<>();
-        Boolean errorInput;
+        Boolean errorInput = true;
         Integer choosenIndex = -1;
         do {
             try {
-                errorInput = false;
                 System.out.println("Unosom broja isred teksta odaberite zeljenu akciju: ");
                 System.out.println("1. Pregled imenika\n" +
                         "2. Unos novog korisnika\n" +
                         "3. Kraj programa");
                 choosenIndex = scanner.nextInt();
                 scanner.nextLine();
-                if (choosenIndex < 1 || choosenIndex > 3) {
-                    throw new IllegalArgumentException();
-                }
+//                if (choosenIndex < 1 || choosenIndex > 3) {
+//                    throw new IllegalArgumentException();
+//                }
             } catch (IllegalArgumentException e) {
-                errorInput = true;
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
             }
             switch (choosenIndex) {
@@ -36,7 +34,7 @@ public class FileUtils {
                 case 3 -> errorInput = false;
             }
 
-        } while (errorInput);
+        } while (errorInput || choosenIndex < 1 || choosenIndex > 3);
     }
 
     public static void searchPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
@@ -71,22 +69,20 @@ public class FileUtils {
     public static void searchByPhoneNumber(Scanner scanner, List<Phonebook> phonebookList) {
         Long phoneNumber = -1L;
         Boolean errorInput;
+        String input = null;
 
         do {
             errorInput = false;
             try {
                 System.out.println("Unesite broj mobitela u formatu (09xxxxxxxx): ");
-                String input = scanner.nextLine();
-                if (input.length() < 10 || input.length() > 11) {
-                    throw new IllegalArgumentException();
-                }
+                input = scanner.nextLine();
                 phoneNumber = Long.parseLong(input);
 
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo pokusajte ponovno po preporucenom formatu.");
             }
-        } while (errorInput);
+        } while (errorInput || input.length() < 10 || input.length() > 11);
 
         for (Phonebook phonebook : phonebookList) {
             if (phonebook.getPhoneNumber().equals(phoneNumber)) {
@@ -118,7 +114,7 @@ public class FileUtils {
         } while (errorInput);
 
         for (Phonebook phonebook : phonebookList) {
-            if (phonebook.getLastName().equals(lastName)) {
+            if (phonebook.getLastName().equalsIgnoreCase(lastName)) {
                 System.out.println("Korisnik pronaden:");
                 System.out.println(phonebook);
             } else {
@@ -142,7 +138,7 @@ public class FileUtils {
         } while (errorInput);
 
         for (Phonebook phonebook : phonebookList) {
-            if (phonebook.getFirstName().equals(firstName)) {
+            if (phonebook.getFirstName().equalsIgnoreCase(firstName)) {
                 System.out.println("Korisnik pronaden:");
                 System.out.println(phonebook);
             } else {
@@ -155,20 +151,18 @@ public class FileUtils {
     public static void searchByOib(Scanner scanner, List<Phonebook> phonebookList) {
         Long oib = -1L;
         Boolean errorInput;
+        String input = null;
         do {
             errorInput = false;
             try {
                 System.out.println("Unesite OIB (11 znamenki): ");
-                String input = scanner.nextLine();
-                if (input.length() != 11) {
-                    throw new IllegalArgumentException();
-                }
+                input = scanner.nextLine();
                 oib = Long.parseLong(input);
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo unesite 11 znamenki.");
             }
-        } while (errorInput);
+        } while (errorInput || input.length() != 11);
 
         for (Phonebook phonebook : phonebookList) {
             if (phonebook.getOib().equals(oib)) {
@@ -195,20 +189,18 @@ public class FileUtils {
         Long phoneNumber = -1L;
 
         Boolean errorInput;
+        String input = null;
         do {
             errorInput = false;
             try {
                 System.out.println("Unesite OIB (11 znamenki): ");
-                String input = scanner.nextLine();
-                if (input.length() != 11) {
-                    throw new IllegalArgumentException();
-                }
+                input = scanner.nextLine();
                 oib = Long.parseLong(input);
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo unesite 11 znamenki.");
             }
-        } while (errorInput);
+        } while (errorInput || input.length() != 11);
 
         do {
             errorInput = false;
@@ -259,17 +251,14 @@ public class FileUtils {
             errorInput = false;
             try {
                 System.out.println("Unesite broj mobitela u formatu (09xxxxxxxx): ");
-                String input = scanner.nextLine();
-                if (input.length() < 10 || input.length() > 11) {
-                    throw new IllegalArgumentException();
-                }
+                input = scanner.nextLine();
                 phoneNumber = Long.parseLong(input);
 
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo pokusajte ponovno po preporucenom formatu.");
             }
-        } while (errorInput);
+        } while (errorInput || input.length() < 10 || input.length() > 11 || input.startsWith("09"));
 
         return new Phonebook(oib, firstName, lastName, address, phoneNumber);
     }
