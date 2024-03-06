@@ -49,14 +49,12 @@ public class FileUtils {
                         "5. Pretrazivanje po broju");
                 choosenIndex = scanner.nextInt();
                 scanner.nextLine();
-                if (choosenIndex < 1 || choosenIndex > 5) {
-                    throw new InputMismatchException();
-                }
             } catch (InputMismatchException e) {
                 errorInput = true;
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
+                scanner.nextLine();
             }
-        } while (errorInput);
+        } while (errorInput || choosenIndex < 1 || choosenIndex > 5);
 
         switch (choosenIndex) {
             case 1 -> searchByOib(scanner, phonebookList);
