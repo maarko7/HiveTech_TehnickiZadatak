@@ -2,11 +2,16 @@ package dev.ms.production.model;
 
 public class Phonebook {
 
+    Long id;
+
     private Long oib;
     private String firstName;
     private String lastName;
     private Address address;
     private Long phoneNumber;
+
+    public Phonebook() {
+    }
 
     public Phonebook(Long oib, String firstName, String lastName,
                      Address address, Long phoneNumber) {
@@ -15,6 +20,14 @@ public class Phonebook {
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getOib() {
