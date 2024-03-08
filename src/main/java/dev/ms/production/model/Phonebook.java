@@ -1,5 +1,9 @@
 package dev.ms.production.model;
 
+
+/**
+ * Predstavlja unos u telefonskom imeniku s informacijama poput OIB-a, imena, prezimena, adrese i broja telefona.
+ */
 public class Phonebook {
 
     Long id;
@@ -10,9 +14,15 @@ public class Phonebook {
     private Address address;
     private String phoneNumber;
 
-    public Phonebook() {
-    }
-
+    /**
+     * Konstruktor za stvaranje unosa u imeniku s informacijama.
+     *
+     * @param oib          OIB osobe.
+     * @param firstName    Ime osobe.
+     * @param lastName     Prezime osobe.
+     * @param address      Adresa osobe.
+     * @param phoneNumber Broj telefona osobe.
+     */
     public Phonebook(Long oib, String firstName, String lastName,
                      Address address, String phoneNumber) {
         this.oib = oib;

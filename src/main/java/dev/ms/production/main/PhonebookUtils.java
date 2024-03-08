@@ -5,8 +5,16 @@ import dev.ms.production.model.Phonebook;
 
 import java.util.*;
 
+/**
+ * Utility klasa koja pruža različite opcije za upravljanje imenikom.
+ */
 public class PhonebookUtils {
 
+    /**
+     * Metoda za prikazivanje opcija programa.
+     *
+     * @param scanner Scanner objekt za unos korisnika.
+     */
     public static void programOptions(Scanner scanner) {
         List<Phonebook> phonebookList = new ArrayList<>();
         Boolean errorInput = true;
@@ -34,6 +42,12 @@ public class PhonebookUtils {
         } while (errorInput);
     }
 
+    /**
+     * Metoda za brisanje korisnika iz imenika.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void deleteUserFromPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
         Boolean errorInput;
         Integer choosenIndex = -1;
@@ -56,6 +70,12 @@ public class PhonebookUtils {
         phonebookList.remove(choosenIndex - 1);
     }
 
+    /**
+     * Metoda za pretraživanje imenika prema različitim kriterijima.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void searchPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
         Boolean errorInput;
         Integer choosenIndex = -1;
@@ -89,6 +109,11 @@ public class PhonebookUtils {
         }
     }
 
+    /**
+     * Metoda za pretraživanje imenika i ispis svih korisnika.
+     *
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void searchAllUsersInPhonebookList(List<Phonebook> phonebookList) {
         int i = 0;
         phonebookList.stream()
@@ -96,6 +121,12 @@ public class PhonebookUtils {
                 .forEach(System.out::println);
     }
 
+    /**
+     * Metoda za pretraživanje imenika po broju telefona.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void searchByPhoneNumber(Scanner scanner, List<Phonebook> phonebookList) {
         String phoneNumber = null;
         Boolean errorInput;
@@ -123,6 +154,12 @@ public class PhonebookUtils {
         }
     }
 
+    /**
+     * Metoda za pretraživanje imenika po adresi.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void searchByAddress(Scanner scanner, List<Phonebook> phonebookList) {
         Address address;
         String city;
@@ -168,6 +205,12 @@ public class PhonebookUtils {
         }
     }
 
+    /**
+     * Metoda za pretraživanje imenika po prezimenu.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void searchByLastName(Scanner scanner, List<Phonebook> phonebookList) {
         String lastName;
         Boolean errorInput;
@@ -195,6 +238,12 @@ public class PhonebookUtils {
         }
     }
 
+    /**
+     * Metoda za pretraživanje imenika po imenu.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void searchByFirstName(Scanner scanner, List<Phonebook> phonebookList) {
         String firstName;
         Boolean errorInput;
@@ -223,6 +272,12 @@ public class PhonebookUtils {
 
     }
 
+    /**
+     * Metoda za pretraživanje imenika po OIB-u.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void searchByOib(Scanner scanner, List<Phonebook> phonebookList) {
         Long oib = -1L;
         Boolean errorInput;
@@ -252,11 +307,24 @@ public class PhonebookUtils {
         }
     }
 
+    /**
+     * Metoda za dodavanje novog korisnika u imenik.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     */
     public static void addUserToPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
         phonebookList.add(createNewUser(scanner, phonebookList));
         System.out.println("Korisnik uspjesno dodan u imenik.");
     }
 
+    /**
+     * Metoda za stvaranje novog korisnika.
+     *
+     * @param scanner     Scanner objekt za unos korisnika.
+     * @param phonebookList Lista korisnika u imeniku.
+     * @return Novi korisnik.
+     */
     public static Phonebook createNewUser(Scanner scanner, List<Phonebook> phonebookList) {
         Long oib = -1L;
         String firstName;

@@ -3,7 +3,7 @@ package dev.ms.production.model;
 import java.util.Objects;
 
 /**
- * Klasa koja predstavlja adresu sačinjenu od ulice, kućnog broja, grada i poštanskog broja.
+ * Predstavlja adresu s informacijama o ulici, kućnom broju i gradu.
  */
 public class Address {
 
@@ -13,11 +13,11 @@ public class Address {
     private String city;
 
     /**
-     * Konstruktor koji inicijalizira objekt klase Address s navedenim informacijama.
+     * Stvara novi objekt Address s navedenom ulicom, kućnim brojem i gradom.
      *
-     * @param street      Naziv ulice
-     * @param houseNumber Kućni broj
-     * @param city        Grad (enumeracija "City")
+     * @param street      Naziv ulice.
+     * @param houseNumber Kućni broj.
+     * @param city        Naziv grada.
      */
     public Address(String street, String houseNumber, String city) {
         this.street = street;
@@ -25,6 +25,14 @@ public class Address {
         this.city = city;
     }
 
+    /**
+     * Stvara novi objekt Address s navedenim identifikatorom, ulicom, kućnim brojem i gradom.
+     *
+     * @param id          Jedinstveni identifikator adrese.
+     * @param street      Naziv ulice.
+     * @param houseNumber Kućni broj.
+     * @param city        Naziv grada.
+     */
     public Address(Long id, String street, String houseNumber, String city) {
         this.id = id;
         this.street = street;
