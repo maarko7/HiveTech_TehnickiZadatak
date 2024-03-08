@@ -8,13 +8,13 @@ public class Phonebook {
     private String firstName;
     private String lastName;
     private Address address;
-    private Long phoneNumber;
+    private String phoneNumber;
 
     public Phonebook() {
     }
 
     public Phonebook(Long oib, String firstName, String lastName,
-                     Address address, Long phoneNumber) {
+                     Address address, String phoneNumber) {
         this.oib = oib;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,11 +62,11 @@ public class Phonebook {
         this.address = address;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

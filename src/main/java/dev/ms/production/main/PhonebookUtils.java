@@ -3,29 +3,28 @@ package dev.ms.production.main;
 import dev.ms.production.model.Address;
 import dev.ms.production.model.Phonebook;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-public class FileUtils {
+public class PhonebookUtils {
 
     public static void programOptions(Scanner scanner) {
         List<Phonebook> phonebookList = new ArrayList<>();
         Boolean errorInput = true;
-        Integer choosenIndex = -1;
+        Integer choosenIndex;
         do {
             try {
                 System.out.println("Unosom broja ispred teksta odaberite zeljenu akciju: ");
                 System.out.println("1. Pregled imenika\n" +
                         "2. Unos novog korisnika\n" +
-                        "3. Kraj programa");
+                        "3. Brisanje korisnika\n" +
+                        "4. Kraj programa");
                 choosenIndex = scanner.nextInt();
                 scanner.nextLine();
                 switch (choosenIndex) {
                     case 1 -> searchPhonebookList(scanner, phonebookList);
                     case 2 -> addUserToPhonebookList(scanner, phonebookList);
-                    case 3 -> errorInput = false;
+                    case 3 -> deleteUserFromPhonebookList(scanner, phonebookList);
+                    case 4 -> errorInput = false;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
@@ -35,6 +34,28 @@ public class FileUtils {
         } while (errorInput);
     }
 
+    public static void deleteUserFromPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
+        Boolean errorInput;
+        Integer choosenIndex = -1;
+
+        do {
+            errorInput = false;
+            System.out.println("Unesite broj ispred korisnika kojeg zelite ukloniti.");
+            for (int i = 0; i < phonebookList.size(); i++) {
+                System.out.println((i + 1) + ". " + phonebookList.get(i));
+            }
+            try {
+                choosenIndex = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                errorInput = true;
+                System.out.println("Pogresan odabir. Pokusajte ponovno");
+                scanner.nextLine();
+            }
+        } while (errorInput || choosenIndex < 1 || choosenIndex > phonebookList.size());
+        phonebookList.remove(choosenIndex - 1);
+    }
+
     public static void searchPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
         Boolean errorInput;
         Integer choosenIndex = -1;
@@ -42,11 +63,12 @@ public class FileUtils {
             errorInput = false;
             try {
                 System.out.println("Unosom broja ispred teksta odaberite zeljenu akciju:");
-                System.out.println("1. Pretrazivanje po OIB-u\n" +
-                        "2. Pretrazivanje po imenu\n" +
-                        "3. Pretrazivanje po prezimenu\n" +
-                        "4. Pretrazivanje po adresi\n" +
-                        "5. Pretrazivanje po broju");
+                System.out.println("1. Ispis svih korisnika\n" +
+                        "2. Pretrazivanje po OIB-u\n" +
+                        "3. Pretrazivanje po imenu\n" +
+                        "4. Pretrazivanje po prezimenu\n" +
+                        "5. Pretrazivanje po adresi\n" +
+                        "6. Pretrazivanje po broju");
                 choosenIndex = scanner.nextInt();
                 scanner.nextLine();
             } catch (InputMismatchException e) {
@@ -54,20 +76,28 @@ public class FileUtils {
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
                 scanner.nextLine();
             }
-        } while (errorInput || choosenIndex < 1 || choosenIndex > 5);
+        } while (errorInput || choosenIndex < 1 || choosenIndex > 6);
 
         switch (choosenIndex) {
-            case 1 -> searchByOib(scanner, phonebookList);
-            case 2 -> searchByFirstName(scanner, phonebookList);
-            case 3 -> searchByLastName(scanner, phonebookList);
-            case 4 -> searchByAddress(scanner, phonebookList);
-            case 5 -> searchByPhoneNumber(scanner, phonebookList);
+            case 1 -> searchAllUsersInPhonebookList(phonebookList);
+            case 2 -> searchByOib(scanner, phonebookList);
+            case 3 -> searchByFirstName(scanner, phonebookList);
+            case 4 -> searchByLastName(scanner, phonebookList);
+            case 5 -> searchByAddress(scanner, phonebookList);
+            case 6 -> searchByPhoneNumber(scanner, phonebookList);
             default -> programOptions(scanner);
         }
     }
 
+    public static void searchAllUsersInPhonebookList(List<Phonebook> phonebookList) {
+        int i = 0;
+        phonebookList.stream()
+                .sorted(Comparator.comparing(Phonebook::getLastName))
+                .forEach(System.out::println);
+    }
+
     public static void searchByPhoneNumber(Scanner scanner, List<Phonebook> phonebookList) {
-        Long phoneNumber = -1L;
+        String phoneNumber = null;
         Boolean errorInput;
         String input = null;
 
@@ -75,8 +105,7 @@ public class FileUtils {
             errorInput = false;
             try {
                 System.out.println("Unesite broj mobitela u formatu (09xxxxxxxx): ");
-                input = scanner.nextLine();
-                phoneNumber = Long.parseLong(input);
+                phoneNumber = scanner.nextLine();
 
             } catch (IllegalArgumentException e) {
                 errorInput = true;
@@ -225,6 +254,7 @@ public class FileUtils {
 
     public static void addUserToPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
         phonebookList.add(createNewUser(scanner, phonebookList));
+        System.out.println("Korisnik uspjesno dodan u imenik.");
     }
 
     public static Phonebook createNewUser(Scanner scanner, List<Phonebook> phonebookList) {
@@ -235,7 +265,7 @@ public class FileUtils {
         String streetName;
         String houseNumber;
         Address address;
-        Long phoneNumber = -1L;
+        String phoneNumber;
 
         Boolean errorInput;
         String input = null;
@@ -305,16 +335,13 @@ public class FileUtils {
 
         do {
             errorInput = false;
-            try {
-                System.out.println("Unesite broj mobitela u formatu (09xxxxxxxx): ");
-                input = scanner.nextLine();
-                phoneNumber = Long.parseLong(input);
-
-            } catch (IllegalArgumentException e) {
+            System.out.println("Unesite broj mobitela u formatu (09xxxxxxxx): ");
+            phoneNumber = scanner.nextLine();
+            if (!phoneNumber.matches("[0-9]+") || phoneNumber.length() < 10 || phoneNumber.length() > 11 || !phoneNumber.startsWith("09")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo pokusajte ponovno po preporucenom formatu.");
             }
-        } while (errorInput || input.length() < 10 || input.length() > 11 || !input.startsWith("09"));
+        } while (errorInput);
 
         return new Phonebook(oib, firstName, lastName, address, phoneNumber);
     }
