@@ -1,7 +1,10 @@
 package dev.ms.production.main;
 
+import dev.ms.production.exception.DuplicateOibException;
 import dev.ms.production.model.Address;
 import dev.ms.production.model.Phonebook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -9,6 +12,8 @@ import java.util.*;
  * Utility klasa koja pruža različite opcije za upravljanje imenikom.
  */
 public class PhonebookUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(PhonebookUtils.class);
 
     /**
      * Metoda za prikazivanje opcija programa.
@@ -36,6 +41,7 @@ public class PhonebookUtils {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost", e);
                 scanner.nextLine();
             }
 
@@ -64,6 +70,7 @@ public class PhonebookUtils {
             } catch (InputMismatchException e) {
                 errorInput = true;
                 System.out.println("Pogresan odabir. Pokusajte ponovno");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost", e);
                 scanner.nextLine();
             }
         } while (errorInput || choosenIndex < 1 || choosenIndex > phonebookList.size());
@@ -94,6 +101,7 @@ public class PhonebookUtils {
             } catch (InputMismatchException e) {
                 errorInput = true;
                 System.out.println("Pogresan odabir. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost", e);
                 scanner.nextLine();
             }
         } while (errorInput || choosenIndex < 1 || choosenIndex > 6);
@@ -141,6 +149,7 @@ public class PhonebookUtils {
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo pokusajte ponovno po preporucenom formatu.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost", e);
             }
         } while (errorInput || input.length() < 10 || input.length() > 11);
 
@@ -174,6 +183,7 @@ public class PhonebookUtils {
             if (!city.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Naziv grada moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -184,6 +194,7 @@ public class PhonebookUtils {
             if (!streetName.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Naziv ulice moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -222,6 +233,7 @@ public class PhonebookUtils {
             if (!lastName.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Prezime moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -255,6 +267,7 @@ public class PhonebookUtils {
             if (!firstName.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Ime moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -291,6 +304,7 @@ public class PhonebookUtils {
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo unesite 11 znamenki.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost", e);
             }
         } while (errorInput || input.length() != 11);
 
@@ -316,6 +330,7 @@ public class PhonebookUtils {
     public static void addUserToPhonebookList(Scanner scanner, List<Phonebook> phonebookList) {
         phonebookList.add(createNewUser(scanner, phonebookList));
         System.out.println("Korisnik uspjesno dodan u imenik.");
+        logger.info("Novi korisnik dodan u imenik.");
     }
 
     /**
@@ -325,7 +340,7 @@ public class PhonebookUtils {
      * @param phonebookList Lista korisnika u imeniku.
      * @return Novi korisnik.
      */
-    public static Phonebook createNewUser(Scanner scanner, List<Phonebook> phonebookList) {
+    public static Phonebook createNewUser(Scanner scanner, List<Phonebook> phonebookList) throws DuplicateOibException {
         Long oib = -1L;
         String firstName;
         String lastName;
@@ -348,11 +363,14 @@ public class PhonebookUtils {
                     if (phonebook.getOib().equals(oib)) {
                         errorInput = true;
                         System.out.println("OIB vec postoji. Unesite drugi OIB.");
+                        logger.info("Pokusaj kreiranja korisnika s OIB-om koji vec postoji.");
+                        throw new DuplicateOibException("Korisnik je unio OIB koji već postoji" + oib);
                     }
                 }
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo unesite 11 znamenki.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost", e);
             }
         } while (errorInput || input.length() != 11);
 
@@ -363,6 +381,7 @@ public class PhonebookUtils {
             if (!firstName.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Ime moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -373,6 +392,7 @@ public class PhonebookUtils {
             if (!lastName.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Prezime moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -383,6 +403,7 @@ public class PhonebookUtils {
             if (!city.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Naziv grada moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -393,6 +414,7 @@ public class PhonebookUtils {
             if (!streetName.matches("[a-zA-Z]+")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Naziv ulice moze sadrzavati samo slova. Pokusajte ponovno.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
@@ -408,6 +430,7 @@ public class PhonebookUtils {
             if (!phoneNumber.matches("[0-9]+") || phoneNumber.length() < 10 || phoneNumber.length() > 11 || !phoneNumber.startsWith("09")) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo pokusajte ponovno po preporucenom formatu.");
+                logger.error("Korisnik je unio nedozvoljenu vrijednost");
             }
         } while (errorInput);
 
