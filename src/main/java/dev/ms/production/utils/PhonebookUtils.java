@@ -1,4 +1,4 @@
-package dev.ms.production.main;
+package dev.ms.production.utils;
 
 import dev.ms.production.exception.DuplicateOibException;
 import dev.ms.production.model.Address;
@@ -340,7 +340,7 @@ public class PhonebookUtils {
      * @param phonebookList Lista korisnika u imeniku.
      * @return Novi korisnik.
      */
-    public static Phonebook createNewUser(Scanner scanner, List<Phonebook> phonebookList) throws DuplicateOibException {
+    public static Phonebook createNewUser(Scanner scanner, List<Phonebook> phonebookList) {
         Long oib = -1L;
         String firstName;
         String lastName;
@@ -359,18 +359,15 @@ public class PhonebookUtils {
                 input = scanner.nextLine();
                 oib = Long.parseLong(input);
 
-                for (Phonebook phonebook : phonebookList) {
-                    if (phonebook.getOib().equals(oib)) {
-                        errorInput = true;
-                        System.out.println("OIB vec postoji. Unesite drugi OIB.");
-                        logger.info("Pokusaj kreiranja korisnika s OIB-om koji vec postoji.");
-                        throw new DuplicateOibException("Korisnik je unio OIB koji već postoji" + oib);
-                    }
-                }
+                CheckExceptions.checkUniqueId(oib, phonebookList);
             } catch (IllegalArgumentException e) {
                 errorInput = true;
                 System.out.println("Pogresan unos. Molimo unesite 11 znamenki.");
                 logger.error("Korisnik je unio nedozvoljenu vrijednost", e);
+            } catch (DuplicateOibException e) {
+                errorInput = true;
+                System.out.println("OIB vec postoji. Pokusajte ponovno.");
+                logger.error("Korisnik je unio OIB koji vec postoji", e);
             }
         } while (errorInput || input.length() != 11);
 
